@@ -1,17 +1,11 @@
 {
-  "firebase": {
-    "apiKey": "AIzaSyCToNn1VqYZrZjjbbBA2KW126ZBso-0D80",
-    "authDomain": "adtonx-bot.firebaseapp.com",
-    "projectId": "adtonx-bot",
-    "storageBucket": "adtonx-bot.firebasestorage.app",
-    "messagingSenderId": "290170776005",
-    "appId": "1:290170776005:web:82f88036aa42d080e2c3ac"
+  "name": "adtonx-pure-html",
+  "version": "1.0.0",
+  "description": "AdTONX - TON Revenue Protocol (Pure HTML/JS Version)",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server ."
   },
-  "platform": {
-    "botUsername": "AdTONX_BOT",
-    "miniAppName": "app",
-    "arenaEligibility": 700,
-    "prizePool": 5.0,
-    "officialChannel": "https://t.me/AdTONX_News"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }
