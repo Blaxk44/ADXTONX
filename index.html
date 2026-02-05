@@ -1,30 +1,25 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>AdTONX - TON Revenue Protocol</title>
-    
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js"></script>
-    
-    <!-- Icon Library -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    
-    <!-- Ad Networks SDK -->
-    <script src="https://alwingulla.com/88/p.js" async></script>
-    <script src="https://app.adsgram.ai/js/adsgram-ad-sdk.js"></script>
-    <script src="https://cdn.tgads.space/assets/js/adexium-widget.min.js"></script>
-    
-    <!-- Telegram Web App SDK -->
+    <title>AdTONX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js?56"></script>
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Monetag SDK -->
+    <script src="https://alwingulla.com/88/p.js" async onload="window.monetagLoaded = true" onerror="window.monetagBlocked = true"></script>
+    
+    <!-- Adsgram SDK -->
+    <script src="https://app.adsgram.ai/js/adsgram-ad-sdk.js" onload="window.adsgramLoaded = true" onerror="window.adsgramBlocked = true"></script>
+
+    <!-- Adexium Widget -->
+    <script type="text/javascript" src="https://cdn.tgads.space/assets/js/adexium-widget.min.js" onload="window.adexiumLoaded = true" onerror="window.adexiumBlocked = true"></script>
     
     <style>
-        /* 所有原始CSS样式 */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+        
         :root {
             --primary-glow: rgba(34, 211, 238, 0.15);
             --secondary-glow: rgba(59, 130, 246, 0.1);
@@ -42,6 +37,7 @@
             font-family: 'Space Grotesk', sans-serif; 
         }
 
+        /* Sophisticated Luxury Blockchain Architecture */
         .blockchain-viewport { 
             position: fixed; 
             inset: 0; 
@@ -50,6 +46,7 @@
             overflow: hidden;
         }
 
+        /* Deep Multi-layered Ambient Depth */
         .ambient-glow-1 {
             position: absolute;
             width: 140vw;
@@ -72,6 +69,7 @@
             filter: blur(100px);
         }
 
+        /* Animated Kinetic Mesh Network */
         .blockchain-mesh { 
             position: absolute; 
             inset: 0; 
@@ -86,6 +84,7 @@
             mask-image: radial-gradient(ellipse at 50% 50%, black 20%, transparent 100%);
         }
 
+        /* Dynamic Data-Stream Particles */
         .data-streams {
             position: absolute;
             inset: 0;
@@ -100,6 +99,7 @@
             animation: bit-fall linear infinite;
         }
 
+        /* Stylized Floating Node Blocks */
         .node-block {
             position: absolute;
             width: 40px;
@@ -171,52 +171,61 @@
         }
 
         @keyframes slide-down { 0% { transform: translate(-50%, -100%); } 100% { transform: translate(-50%, 0); } }
+        .animate-slide-down { animation: slide-down 0.5s ease-out forwards; }
         
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        .animate-shake { animation: shake 0.2s ease-in-out infinite; }
         
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-        @keyframes loading-bar {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(300%); }
-        }
-
-        .animate-loading-bar {
-            animation: loading-bar 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
         .animate-spin-slow { animation: spin 8s linear infinite; }
 
+        /* TonConnect Custom Styling */
+        tc-root button {
+            background-color: rgba(34, 211, 238, 0.08) !important;
+            border: 1px solid rgba(34, 211, 238, 0.2) !important;
+            color: #22d3ee !important;
+            border-radius: 1.25rem !important;
+            font-family: 'Space Grotesk', sans-serif !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.08em !important;
+            backdrop-filter: blur(12px) !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        }
+
+        tc-root button:hover {
+            background-color: rgba(34, 211, 238, 0.15) !important;
+            box-shadow: 0 0 20px rgba(34, 211, 238, 0.2) !important;
+        }
+
+        /* Data Bit Assignments */
         .stream-bit:nth-child(1) { left: 5%; animation-duration: 3s; animation-delay: 0s; }
         .stream-bit:nth-child(2) { left: 20%; animation-duration: 4s; animation-delay: 1.5s; }
         .stream-bit:nth-child(3) { left: 45%; animation-duration: 2.5s; animation-delay: 0.5s; }
         .stream-bit:nth-child(4) { left: 70%; animation-duration: 5s; animation-delay: 2s; }
         .stream-bit:nth-child(5) { left: 90%; animation-duration: 3.5s; animation-delay: 1s; }
 
+        /* Node Block Assignments */
         .node-block:nth-child(1) { left: 15%; animation-duration: 28s; animation-delay: 0s; }
         .node-block:nth-child(2) { left: 80%; animation-duration: 32s; animation-delay: -10s; }
         .node-block:nth-child(3) { left: 40%; animation-duration: 24s; animation-delay: -5s; }
-        
-        .animate-slide-down {
-            animation: slide-down 0.5s ease-out forwards;
-        }
-        
-        .animate-shake {
-            animation: shake 0.2s ease-in-out infinite;
-        }
-        
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
-        }
     </style>
+<script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-router-dom": "https://esm.sh/react-router-dom@^7.13.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "firebase/": "https://esm.sh/firebase@^12.8.0/",
+    "@tonconnect/ui-react": "https://esm.sh/@tonconnect/ui-react@^2.0.9"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
 </head>
 <body>
-    <!-- Background Effects -->
     <div class="blockchain-viewport">
         <div class="ambient-glow-1"></div>
         <div class="ambient-glow-2"></div>
@@ -234,83 +243,8 @@
             <div class="node-block"></div>
         </div>
     </div>
-
-    <!-- Main Content Container -->
-    <div id="app">
-        <!-- Content will be dynamically loaded here -->
-    </div>
-
-    <!-- Navigation -->
-    <nav id="navigation" class="glass-nav fixed bottom-0 left-0 right-0 px-8 pt-4 pb-10 z-[100] border-t border-white/5 hidden">
-        <div class="max-w-md mx-auto flex justify-between items-center">
-            <a href="#home" class="nav-item" data-page="home">
-                <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="home" class="text-slate-500 w-6 h-6"></i>
-                    <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Home</span>
-                </div>
-            </a>
-            <a href="#ads" class="nav-item" data-page="ads">
-                <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="play" class="text-slate-500 w-6 h-6"></i>
-                    <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Yield</span>
-                </div>
-            </a>
-            <a href="#tasks" class="nav-item" data-page="tasks">
-                <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="check-square" class="text-slate-500 w-6 h-6"></i>
-                    <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Quests</span>
-                </div>
-            </a>
-            <a href="#wallet" class="nav-item" data-page="wallet">
-                <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="wallet" class="text-slate-500 w-6 h-6"></i>
-                    <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Vault</span>
-                </div>
-            </a>
-            <a href="#profile" class="nav-item" data-page="profile">
-                <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="user" class="text-slate-500 w-6 h-6"></i>
-                    <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Node</span>
-                </div>
-            </a>
-        </div>
-    </nav>
-
-    <!-- Scripts -->
-    <script>
-        // Define global variables
-        window.AdTONX = {
-            config: {
-                BOT_USERNAME: "AdTONX_BOT",
-                MINI_APP_NAME: "app",
-                ARENA_ELIGIBILITY: 700,
-                PRIZE_POOL: 5.0,
-                OFFICIAL_CHANNEL: "https://t.me/AdTONX_News"
-            },
-            user: null,
-            currentPage: 'home'
-        };
-
-        // Firebase config
-        const firebaseConfig = {
-            apiKey: "AIzaSyCToNn1VqYZrZjjbbBA2KW126ZBso-0D80",
-            authDomain: "adtonx-bot.firebaseapp.com",
-            projectId: "adtonx-bot",
-            storageBucket: "adtonx-bot.firebasestorage.app",
-            messagingSenderId: "290170776005",
-            appId: "1:290170776005:web:82f88036aa42d080e2c3ac"
-        };
-    </script>
-    
-    <script src="js/firebase.js"></script>
-    <script src="js/router.js"></script>
-    <script src="js/pages/home.js"></script>
-    <script src="js/pages/ads.js"></script>
-    <script src="js/pages/tasks.js"></script>
-    <script src="js/pages/wallet.js"></script>
-    <script src="js/pages/profile.js"></script>
-    <script src="js/pages/admin.js"></script>
-    <script src="js/pages/leaderboard.js"></script>
-    <script src="js/main.js"></script>
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
 </body>
 </html>
