@@ -1,0 +1,10 @@
+{
+  "name": "adtonx-html",
+  "version": "1.0.0",
+  "description": "AdTONX - TON Revenue Protocol (HTML/JS Version)",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
