@@ -1,0 +1,23 @@
+{
+  "name": "adtonx-webapp",
+  "image": "node:18-alpine",
+  "deployment": {
+    "numReplicas": 1,
+    "healthCheckPath": "/",
+    "healthCheckTimeout": 5
+  },
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "3000"
+  },
+  "startCommand": "node server.js",
+  "rootDirectory": ".",
+  "checks": {
+    "http": {
+      "path": "/",
+      "port": 3000,
+      "timeout": 5000,
+      "interval": 300
+    }
+  }
+}

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdTONX Admin Setup</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .glass {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <div class="glass rounded-3xl p-8 shadow-2xl">
+            <!-- Logo -->
+            <div class="flex justify-center mb-8">
+                <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-2xl font-black">
+                    AX
+                </div>
+            </div>
+            
+            <h1 class="text-3xl font-black text-center mb-2 text-white">AdTONX Admin</h1>
+            <p class="text-slate-400 text-center mb-8 text-sm">Initial Platform Configuration</p>
+            
+            <form id="adminSetupForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Telegram Bot Token</label>
+                    <input 
+                        type="password" 
+                        id="botToken"
+                        placeholder="Enter bot token from @BotFather"
+                        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        required
+                    />
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Firebase Admin Key</label>
+                    <textarea 
+                        id="firebaseKey"
+                        placeholder="Paste Firebase service account JSON key"
+                        rows="4"
+                        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white font-mono text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        required
+                    ></textarea>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Min Withdrawal</label>
+                        <input 
+                            type="number" 
+                            id="minWithdrawal"
+                            value="2"
+                            step="0.1"
+                            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            required
+                        />
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-slate-300 mb-2">Withdrawal Fee %</label>
+                        <input 
+                            type="number" 
+                            id="withdrawalFee"
+                            value="20"
+                            min="0"
+                            max="100"
+                            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                            required
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-300 mb-2">Admin Telegram ID</label>
+                    <input 
+                        type="text" 
+                        id="adminId"
+                        placeholder="Your Telegram ID (e.g., 123456789)"
+                        class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                        required
+                    />
+                </div>
+                
+                <div class="pt-4">
+                    <button 
+                        type="submit"
+                        id="setupButton"
+                        class="w-full bg-gradient-to-r from-cyan-600 to-blue-600 text-white py-4 rounded-xl font-black uppercase tracking-widest hover:opacity-90 transition-all active:scale-95"
+                    >
+                        Initialize Platform
+                    </button>
+                </div>
+                
+                <div class="text-center pt-4 border-t border-slate-800">
+                    <p class="text-xs text-slate-500">
+                        Need help? Contact: <a href="https://t.me/AdTONX_Support" class="text-cyan-400 hover:underline" target="_blank">@AdTONX_Support</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('adminSetupForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const button = document.getElementById('setupButton');
+            const originalText = button.textContent;
+            button.textContent = 'Initializing...';
+            button.disabled = true;
+            
+            try {
+                const formData = {
+                    botToken: document.getElementById('botToken').value,
+                    firebaseKey: document.getElementById('firebaseKey').value,
+                    minWithdrawal: parseFloat(document.getElementById('minWithdrawal').value),
+                    withdrawalFee: parseFloat(document.getElementById('withdrawalFee').value),
+                    adminId: document.getElementById('adminId').value
+                };
+                
+                // 这里在实际部署中会发送到服务器API
+                // 现在我们先模拟成功
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // 保存到 localStorage 作为演示
+                localStorage.setItem('adtonx_admin_config', JSON.stringify(formData));
+                
+                alert('✅ Platform initialized successfully!\n\nAdmin privileges have been granted.\nYou can now access the admin panel.');
+                
+                // 重定向到主应用
+                window.location.href = 'index.html#admin';
+                
+            } catch (error) {
+                alert('❌ Setup failed: ' + error.message);
+                button.textContent = originalText;
+                button.disabled = false;
+            }
+        });
+        
+        // 检查是否已经有配置
+        window.addEventListener('load', function() {
+            const config = localStorage.getItem('adtonx_admin_config');
+            if (config) {
+                const parsed = JSON.parse(config);
+                document.getElementById('minWithdrawal').value = parsed.minWithdrawal || 2;
+                document.getElementById('withdrawalFee').value = parsed.withdrawalFee || 20;
+                document.getElementById('adminId').value = parsed.adminId || '';
+            }
+        });
+    </script>
+</body>
+</html>
