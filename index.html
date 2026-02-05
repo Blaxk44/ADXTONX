@@ -24,7 +24,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        /* 保留所有原始CSS样式 */
+        /* 所有原始CSS样式 */
         :root {
             --primary-glow: rgba(34, 211, 238, 0.15);
             --secondary-glow: rgba(59, 130, 246, 0.1);
@@ -196,6 +196,23 @@
         .node-block:nth-child(1) { left: 15%; animation-duration: 28s; animation-delay: 0s; }
         .node-block:nth-child(2) { left: 80%; animation-duration: 32s; animation-delay: -10s; }
         .node-block:nth-child(3) { left: 40%; animation-duration: 24s; animation-delay: -5s; }
+        
+        .animate-slide-down {
+            animation: slide-down 0.5s ease-out forwards;
+        }
+        
+        .animate-shake {
+            animation: shake 0.2s ease-in-out infinite;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
     </style>
 </head>
 <body>
@@ -223,36 +240,36 @@
         <!-- Content will be dynamically loaded here -->
     </div>
 
-    <!-- Navigation (will be shown after login) -->
+    <!-- Navigation -->
     <nav id="navigation" class="glass-nav fixed bottom-0 left-0 right-0 px-8 pt-4 pb-10 z-[100] border-t border-white/5 hidden">
         <div class="max-w-md mx-auto flex justify-between items-center">
-            <a href="#/" class="nav-item" data-page="home">
+            <a href="#home" class="nav-item" data-page="home">
                 <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="home" class="text-slate-500"></i>
+                    <i data-lucide="home" class="text-slate-500 w-6 h-6"></i>
                     <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Home</span>
                 </div>
             </a>
-            <a href="#/ads" class="nav-item" data-page="ads">
+            <a href="#ads" class="nav-item" data-page="ads">
                 <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="play" class="text-slate-500"></i>
+                    <i data-lucide="play" class="text-slate-500 w-6 h-6"></i>
                     <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Yield</span>
                 </div>
             </a>
-            <a href="#/tasks" class="nav-item" data-page="tasks">
+            <a href="#tasks" class="nav-item" data-page="tasks">
                 <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="check-square" class="text-slate-500"></i>
+                    <i data-lucide="check-square" class="text-slate-500 w-6 h-6"></i>
                     <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Quests</span>
                 </div>
             </a>
-            <a href="#/wallet" class="nav-item" data-page="wallet">
+            <a href="#wallet" class="nav-item" data-page="wallet">
                 <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="wallet" class="text-slate-500"></i>
+                    <i data-lucide="wallet" class="text-slate-500 w-6 h-6"></i>
                     <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Vault</span>
                 </div>
             </a>
-            <a href="#/profile" class="nav-item" data-page="profile">
+            <a href="#profile" class="nav-item" data-page="profile">
                 <div class="flex flex-col items-center gap-1.5">
-                    <i data-lucide="user" class="text-slate-500"></i>
+                    <i data-lucide="user" class="text-slate-500 w-6 h-6"></i>
                     <span class="text-[8px] font-black uppercase tracking-widest opacity-60">Node</span>
                 </div>
             </a>
@@ -271,8 +288,7 @@
                 OFFICIAL_CHANNEL: "https://t.me/AdTONX_News"
             },
             user: null,
-            currentPage: 'home',
-            pages: {}
+            currentPage: 'home'
         };
 
         // Firebase config
