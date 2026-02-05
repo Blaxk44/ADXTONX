@@ -432,3 +432,295 @@
     <script src="app.js"></script>
 </body>
 </html>
+            <!-- Ads Screen -->
+            <section id="ads-screen" class="screen">
+                <div class="screen-header">
+                    <h2>📺 Watch Ads</h2>
+                    <p class="subtitle">Earn TON by watching ads</p>
+                </div>
+
+                <div class="daily-progress">
+                    <div class="progress-header">
+                        <span>Daily Progress</span>
+                        <span id="ads-progress">0/3000</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="ads-progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="ad-networks">
+                    <div class="ad-network-card" data-network="monetag">
+                        <div class="network-icon">🎯</div>
+                        <div class="network-name">Monetag</div>
+                        <div class="network-reward" id="monetag-reward">0.005 TON</div>
+                        <button class="btn btn-watch" id="watch-monetag">Watch Ad</button>
+                    </div>
+
+                    <div class="ad-network-card" data-network="adexium">
+                        <div class="network-icon">⚡</div>
+                        <div class="network-name">Adexium</div>
+                        <div class="network-reward" id="adexium-reward">0.005 TON</div>
+                        <button class="btn btn-watch" id="watch-adexium">Watch Ad</button>
+                    </div>
+
+                    <div class="ad-network-card" data-network="adsgram">
+                        <div class="network-icon">📊</div>
+                        <div class="network-name">Adsgram</div>
+                        <div class="network-reward" id="adsgram-reward">0.005 TON</div>
+                        <button class="btn btn-watch" id="watch-adsgram">Watch Ad</button>
+                    </div>
+                </div>
+
+                <div class="tier-info">
+                    <div class="tier-title">🏆 Current Tier</div>
+                    <div class="tier-display" id="current-tier">Tier 1 (0-400 ads)</div>
+                    <div class="tier-reward">Reward per ad: <span id="tier-reward">0.005 TON</span></div>
+                </div>
+
+                <div class="leaderboard-preview">
+                    <div class="leaderboard-header">🏅 Top Earners Today</div>
+                    <div class="leaderboard-list" id="leaderboard-list">
+                        <div class="leaderboard-item">
+                            <span class="rank">1</span>
+                            <span class="name">Loading...</span>
+                            <span class="earnings">-</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Screen -->
+            <section id="tasks-screen" class="screen">
+                <div class="screen-header">
+                    <h2>✅ Tasks</h2>
+                    <p class="subtitle">Complete tasks for extra rewards</p>
+                </div>
+
+                <div class="task-tabs">
+                    <button class="task-tab active" data-tab="official">Official</button>
+                    <button class="task-tab" data-tab="partner">Partner</button>
+                    <button class="task-tab" data-tab="create">Create Task</button>
+                </div>
+
+                <div class="tasks-container">
+                    <div class="task-list" id="official-tasks">
+                        <div class="task-card">
+                            <div class="task-icon">📱</div>
+                            <div class="task-info">
+                                <div class="task-title">Join Telegram Channel</div>
+                                <div class="task-reward">+0.1 TON</div>
+                            </div>
+                            <button class="btn btn-task">Start</button>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-icon">🐦</div>
+                            <div class="task-info">
+                                <div class="task-title">Follow on Twitter</div>
+                                <div class="task-reward">+0.05 TON</div>
+                            </div>
+                            <button class="btn btn-task">Start</button>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-icon">🌐</div>
+                            <div class="task-info">
+                                <div class="task-title">Visit Website</div>
+                                <div class="task-reward">+0.03 TON</div>
+                            </div>
+                            <button class="btn btn-task">Start</button>
+                        </div>
+                        <div class="task-card">
+                            <div class="task-icon">📅</div>
+                            <div class="task-info">
+                                <div class="task-title">Daily Login Bonus</div>
+                                <div class="task-reward">+0.01 TON</div>
+                            </div>
+                            <button class="btn btn-task" id="daily-login-btn">Claim</button>
+                        </div>
+                    </div>
+
+                    <div class="task-list" id="partner-tasks" style="display: none;">
+                        <div class="no-tasks">No partner tasks available</div>
+                    </div>
+
+                    <div class="task-form-container" id="create-task-form" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Task Title</label>
+                            <input type="text" class="form-input" id="task-title" placeholder="Enter task title">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Task Link</label>
+                            <input type="url" class="form-input" id="task-link" placeholder="https://...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Required Clicks</label>
+                            <input type="number" class="form-input" id="task-clicks" placeholder="Number of clicks" min="10">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Total Cost (TON)</label>
+                            <input type="number" class="form-input" id="task-cost" placeholder="Amount in TON" step="0.1" min="1">
+                            <div class="form-hint">1 TON = 250 clicks (0.004 TON per click)</div>
+                        </div>
+                        <button class="btn btn-primary btn-block" id="create-task-submit">Create Task</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Wallet Screen -->
+            <section id="wallet-screen" class="screen">
+                <div class="screen-header">
+                    <h2>💼 Wallet</h2>
+                    <p class="subtitle">Manage your earnings</p>
+                </div>
+
+                <div class="wallet-balance">
+                    <div class="wallet-label">Available Balance</div>
+                    <div class="wallet-amount" id="wallet-balance">0.000</div>
+                    <div class="wallet-currency">TON</div>
+                </div>
+
+                <div class="wallet-actions">
+                    <button class="btn btn-withdraw" id="withdraw-btn">
+                        <span class="btn-icon">💸</span>
+                        Withdraw
+                    </button>
+                    <button class="btn btn-deposit" id="deposit-btn">
+                        <span class="btn-icon">💰</span>
+                        Deposit
+                    </button>
+                </div>
+
+                <div class="wallet-settings">
+                    <div class="wallet-info">
+                        <div class="info-label">Your TON Wallet Address</div>
+                        <div class="info-value" id="wallet-address">Not set</div>
+                        <button class="btn btn-small" id="edit-wallet-btn">Edit</button>
+                    </div>
+                </div>
+
+                <div class="transaction-history">
+                    <div class="history-header">📜 Transaction History</div>
+                    <div class="transaction-list" id="transaction-list">
+                        <div class="no-transactions">No transactions yet</div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-screen="home">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Home</span>
+            </button>
+            <button class="nav-item" data-screen="ads">
+                <span class="nav-icon">📺</span>
+                <span class="nav-label">Ads</span>
+            </button>
+            <button class="nav-item" data-screen="tasks">
+                <span class="nav-icon">✅</span>
+                <span class="nav-label">Tasks</span>
+            </button>
+            <button class="nav-item" data-screen="wallet">
+                <span class="nav-icon">💼</span>
+                <span class="nav-label">Wallet</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- Ad Watching Modal -->
+    <div id="ad-modal" class="modal" style="display: none;">
+        <div class="modal-content ad-modal-content">
+            <div class="ad-timer">
+                <div class="timer-circle">
+                    <div class="timer-text" id="ad-timer-text">10</div>
+                </div>
+            </div>
+            <div class="ad-message">
+                <h3>Watching Ad...</h3>
+                <p>Please wait while the ad plays</p>
+            </div>
+            <div class="ad-reward-preview">
+                Reward: <span id="ad-reward-preview">0.005</span> TON
+            </div>
+        </div>
+    </div>
+
+    <!-- Withdrawal Modal -->
+    <div id="withdraw-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Withdraw TON</h3>
+                <button class="modal-close" id="close-withdraw-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Amount to Withdraw</label>
+                    <input type="number" class="form-input" id="withdraw-amount" placeholder="Min 2 TON" step="0.1" min="2">
+                </div>
+                <div class="withdraw-info">
+                    <div class="info-row">
+                        <span>Amount:</span>
+                        <span id="withdraw-amount-display">0 TON</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Fee (20%):</span>
+                        <span id="withdraw-fee-display">0 TON</span>
+                    </div>
+                    <div class="info-row total">
+                        <span>You'll receive:</span>
+                        <span id="withdraw-net-display">0 TON</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" id="confirm-withdraw">Confirm Withdrawal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wallet Address Modal -->
+    <div id="wallet-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Set Wallet Address</h3>
+                <button class="modal-close" id="close-wallet-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">TON Wallet Address</label>
+                    <input type="text" class="form-input" id="wallet-address-input" placeholder="UQ...">
+                    <div class="form-hint">Enter your TON wallet address to receive withdrawals</div>
+                </div>
+                <button class="btn btn-primary btn-block" id="save-wallet-address">Save Address</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal" style="display: none;">
+        <div class="modal-content success-modal">
+            <div class="success-icon">✅</div>
+            <h3 id="success-title">Success!</h3>
+            <p id="success-message">Operation completed successfully</p>
+            <button class="btn btn-primary" id="close-success-modal">Great!</button>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="error-modal" class="modal" style="display: none;">
+        <div class="modal-content error-modal">
+            <div class="error-icon">❌</div>
+            <h3 id="error-title">Error!</h3>
+            <p id="error-message">Something went wrong</p>
+            <button class="btn btn-primary" id="close-error-modal">OK</button>
+        </div>
+    </div>
+
+    <!-- Admin Panel Link (hidden by default) -->
+    <div id="admin-link" class="admin-link" style="display: none;">
+        <a href="admin.html" class="admin-btn">Admin Panel</a>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
