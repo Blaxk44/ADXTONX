@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AdTONX Admin Panel</title>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    
+    <link rel="stylesheet" href="admin.css">
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+</head>
+<body>
+    
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-screen">
+        <div class="login-card">
+            <img src="https://i.ibb.co/kVv1y82G/IMG-20260201-144811.png" alt="AdTONX" class="login-logo-img">
+            <div class="login-logo">AdTONX Admin</div>
+            <div class="login-subtitle">Management Panel</div>
+            
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-input" id="admin-username" placeholder="Enter username" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-input" id="admin-password" placeholder="Enter password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
+            
+            <div id="login-error" class="error-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" class="admin-panel" style="display: none;">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="https://i.ibb.co/kVv1y82G/IMG-20260201-144811.png" alt="AdTONX" style="width: 32px; height: 32px; margin-right: 8px;">
+                    <span>AdTONX</span>
+                </div>
+                <div class="admin-badge">Admin</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-section="users">
+                    <span class="nav-icon">👥</span>
+                    <span>Users</span>
+                </button>
+                <button class="nav-item" data-section="ads">
+                    <span class="nav-icon">📺</span>
+                    <span>Ads Management</span>
+                </button>
+                <button class="nav-item" data-section="tasks">
+                    <span class="nav-icon">✅</span>
+                    <span>Tasks</span>
+                </button>
+                <button class="nav-item" data-section="wallet">
+                    <span class="nav-icon">💼</span>
+                    <span>Wallet & Transactions</span>
+                </button>
+                <button class="nav-item" data-section="withdrawals">
+                    <span class="nav-icon">💸</span>
+                    <span>Withdrawals</span>
+                    <span class="badge" id="pending-badge">0</span>
+                </button>
+                <button class="nav-item" data-section="referrals">
+                    <span class="nav-icon">🤝</span>
+                    <span>Referrals</span>
+                </button>
+                <button class="nav-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span>Settings</span>
+                </button>
+                <button class="nav-item" data-section="logs">
+                    <span class="nav-icon">📜</span>
+                    <span>Logs & Security</span>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <button class="btn btn-logout" id="logout-btn">
+                    <span>🚪</span> Logout
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Top Bar -->
+            <header class="top-bar">
+                <div class="top-bar-left">
+                    <h1 class="page-title" id="page-title">Dashboard</h1>
+                </div>
+                <div class="top-bar-right">
+                    <div class="admin-info">
+                        <div class="admin-name" id="admin-name">Admin</div>
+                        <div class="admin-role">Super Admin</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Section -->
+            <section id="dashboard-section" class="content-section active">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Total Users</div>
+                            <div class="stat-value" id="total-users">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Active Users (24h)</div>
+                            <div class="stat-value" id="active-users">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Total Revenue</div>
+                            <div class="stat-value" id="total-revenue">0 TON</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💸</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Pending Withdrawals</div>
+                            <div class="stat-value" id="pending-withdrawals">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏦</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Platform Reserve</div>
+                            <div class="stat-value" id="platform-reserve">0 TON</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">📺</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Ads Watched Today</div>
+                            <div class="stat-value" id="ads-today">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3>Earnings Over Time</h3>
+                        <div class="chart-placeholder">
+                            <canvas id="earnings-chart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Revenue Sources</h3>
+                        <div class="chart-placeholder">
+                            <canvas id="revenue-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list" id="recent-activity">
+                        <div class="activity-item">
+                            <div class="activity-icon">👤</div>
+                            <div class="activity-info">
+                                <div class="activity-text">New user registered</div>
+                                <div class="activity-time">2 minutes ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Section -->
+            <section id="users-section" class="content-section">
+                <div class="section-header">
+                    <h2>User Management</h2>
+                    <div class="search-box">
+                        <input type="text" class="search-input" id="user-search" placeholder="Search users...">
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Telegram ID</th>
+                                <th>Username</th>
+                                <th>Balance</th>
+                                <th>Total Earned</th>
+                                <th>Referrals</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table">
+                            <tr>
+                                <td colspan="7">Loading users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Ads Management Section -->
+            <section id="ads-section" class="content-section">
+                <h2>Ad Networks Management</h2>
+                
+                <div class="ads-grid">
+                    <div class="ad-network-card admin">
+                        <div class="network-header">
+                            <div class="network-name">🎯 Monetag</div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="monetag-enabled" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="network-stats">
+                            <div class="stat">
+                                <span>Total Ads:</span>
+                                <span id="monetag-total">0</span>
+                            </div>
+                            <div class="stat">
+                                <span>Revenue:</span>
+                                <span id="monetag-revenue">0 TON</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ad-network-card admin">
+                        <div class="network-header">
+                            <div class="network-name">⚡ Adexium</div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="adexium-enabled" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="network-stats">
+                            <div class="stat">
+                                <span>Total Ads:</span>
+                                <span id="adexium-total">0</span>
+                            </div>
+                            <div class="stat">
+                                <span>Revenue:</span>
+                                <span id="adexium-revenue">0 TON</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ad-network-card admin">
+                        <div class="network-header">
+                            <div class="network-name">📊 Adsgram</div>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="adsgram-enabled" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="network-stats">
+                            <div class="stat">
+                                <span>Total Ads:</span>
+                                <span id="adsgram-total">0</span>
+                            </div>
+                            <div class="stat">
+                                <span>Revenue:</span>
+                                <span id="adsgram-revenue">0 TON</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reward-settings">
+                    <h3>Reward Settings</h3>
+                    <div class="settings-grid">
+                        <div class="form-group">
+                            <label class="form-label">Tier 1 Reward (0-400 ads)</label>
+                            <input type="number" class="form-input" id="tier1-reward" step="0.001" value="0.005">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tier 2 Reward (400-1000 ads)</label>
+                            <input type="number" class="form-input" id="tier2-reward" step="0.001" value="0.007">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Tier 3 Reward (1000+ ads)</label>
+                            <input type="number" class="form-input" id="tier3-reward" step="0.001" value="0.008">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Ad Cooldown (seconds)</label>
+                            <input type="number" class="form-input" id="ad-cooldown" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Daily Ad Limit</label>
+                            <input type="number" class="form-input" id="daily-ad-limit" value="3000">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" id="save-ad-settings">Save Ad Settings</button>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section id="tasks-section" class="content-section">
+                <div class="section-header">
+                    <h2>Task Management</h2>
+                    <button class="btn btn-primary" id="create-official-task">Create Official Task</button>
+                </div>
+
+                <div class="task-tabs">
+                    <button class="task-tab active" data-tab="official">Official Tasks</button>
+                    <button class="task-tab" data-tab="partner">Partner Tasks</button>
+                    <button class="task-tab" data-tab="paid">User-Paid Tasks</button>
+                </div>
+
+                <div class="task-content">
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Task ID</th>
+                                    <th>Title</th>
+                                    <th>Type</th>
+                                    <th>Reward</th>
+                                    <th>Clicks</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tasks-table">
+                                <tr>
+                                    <td colspan="7">Loading tasks...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Wallet Section -->
+            <section id="wallet-section" class="content-section">
+                <h2>Wallet & Transactions</h2>
+                
+                <div class="filters">
+                    <select class="filter-select" id="transaction-type">
+                        <option value="all">All Types</option>
+                        <option value="ad_watched">Ads</option>
+                        <option value="task">Tasks</option>
+                        <option value="referral">Referrals</option>
+                        <option value="deposit">Deposits</option>
+                        <option value="withdraw">Withdrawals</option>
+                    </select>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Transaction ID</th>
+                                <th>User ID</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Fee</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactions-table">
+                            <tr>
+                                <td colspan="6">Loading transactions...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Withdrawals Section -->
+            <section id="withdrawals-section" class="content-section">
+                <h2>Withdrawal Requests</h2>
+                
+                <div class="withdrawal-tabs">
+                    <button class="withdrawal-tab active" data-status="pending">Pending</button>
+                    <button class="withdrawal-tab" data-status="completed">Completed</button>
+                    <button class="withdrawal-tab" data-status="failed">Failed</button>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Withdrawal ID</th>
+                                <th>User</th>
+                                <th>Amount</th>
+                                <th>Fee</th>
+                                <th>Net Amount</th>
+                                <th>Wallet</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="withdrawals-table">
+                            <tr>
+                                <td colspan="8">Loading withdrawals...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Referrals Section -->
+            <section id="referrals-section" class="content-section">
+                <h2>Referral System</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">👥</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Total Referrals</div>
+                            <div class="stat-value" id="total-referrals">0</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💰</div>
+                        <div class="stat-info">
+                            <div class="stat-label">Total Payouts</div>
+                            <div class="stat-value" id="total-payouts">0 TON</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Referrer ID</th>
+                                <th>Referred User</th>
+                                <th>Commission</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="referrals-table">
+                            <tr>
+                                <td colspan="4">Loading referrals...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section" class="content-section">
+                <h2>Platform Settings</h2>
+                
+                <div class="settings-container">
+                    <div class="settings-group">
+                        <h3>Financial Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">Minimum Deposit (TON)</label>
+                            <input type="number" class="form-input" id="min-deposit" step="0.1" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Minimum Withdrawal (TON)</label>
+                            <input type="number" class="form-input" id="min-withdrawal" step="0.1" value="2">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Withdrawal Fee (%)</label>
+                            <input type="number" class="form-input" id="withdrawal-fee" step="0.01" value="20">
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Task Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">Price Per Click (TON)</label>
+                            <input type="number" class="form-input" id="price-per-click" step="0.0001" value="0.004">
+                            <div class="form-hint">1 TON = 250 clicks</div>
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>Referral Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">Commission (%)</label>
+                            <input type="number" class="form-input" id="referral-commission" step="0.01" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Bonus Per Referral (TON)</label>
+                            <input type="number" class="form-input" id="referral-bonus" step="0.001" value="0.005">
+                        </div>
+                    </div>
+
+                    <div class="settings-group">
+                        <h3>CPM Settings</h3>
+                        <div class="form-group">
+                            <label class="form-label">CPM Target</label>
+                            <input type="number" class="form-input" id="cpm-target" value="10000">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Reward Per Click (TON)</label>
+                            <input type="number" class="form-input" id="cpm-reward" step="0.0001" value="0.0028">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Completion Bonus (TON)</label>
+                            <input type="number" class="form-input" id="cpm-bonus" step="0.01" value="0.25">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-large" id="save-settings">Save All Settings</button>
+                </div>
+            </section>
+
+            <!-- Logs Section -->
+            <section id="logs-section" class="content-section">
+                <h2>Logs & Security</h2>
+                
+                <div class="log-filters">
+                    <select class="filter-select" id="log-type">
+                        <option value="all">All Logs</option>
+                        <option value="admin">Admin Actions</option>
+                        <option value="user">User Actions</option>
+                        <option value="security">Security</option>
+                    </select>
+                </div>
+
+                <div class="log-container">
+                    <div class="log-list" id="log-list">
+                        <div class="log-item">
+                            <div class="log-time">2024-01-20 14:25:00</div>
+                            <div class="log-type admin">Admin</div>
+                            <div class="log-message">Admin logged in</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- User Detail Modal -->
+    <div id="user-modal" class="modal" style="display: none;">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>User Details</h3>
+                <button class="modal-close" id="close-user-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="user-detail-info">
+                    <div class="detail-group">
+                        <label>Telegram ID</label>
+                        <div id="detail-telegram-id">-</div>
+                    </div>
+                    <div class="detail-group">
+                        <label>Username</label>
+                        <div id="detail-username">-</div>
+                    </div>
+                    <div class="detail-group">
+                        <label>Balance</label>
+                        <div id="detail-balance">-</div>
+                    </div>
+                    <div class="detail-group">
+                        <label>Total Earned</label>
+                        <div id="detail-total-earned">-</div>
+                    </div>
+                    <div class="detail-group">
+                        <label>Wallet Address</label>
+                        <div id="detail-wallet">-</div>
+                    </div>
+                    <div class="detail-group">
+                        <label>Status</label>
+                        <div id="detail-status">-</div>
+                    </div>
+                </div>
+                <div class="user-actions">
+                    <button class="btn btn-danger" id="ban-user-btn">Ban User</button>
+                    <button class="btn btn-success" id="unban-user-btn" style="display: none;">Unban User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Task Modal -->
+    <div id="task-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Create Official Task</h3>
+                <button class="modal-close" id="close-task-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Task Title</label>
+                    <input type="text" class="form-input" id="task-title-input" placeholder="Enter task title">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Task Description</label>
+                    <textarea class="form-input" id="task-desc-input" placeholder="Enter task description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Task Link</label>
+                    <input type="url" class="form-input" id="task-link-input" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Reward (TON)</label>
+                    <input type="number" class="form-input" id="task-reward-input" placeholder="0.1" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Verification Type</label>
+                    <select class="form-input" id="task-verification-input">
+                        <option value="auto">Auto</option>
+                        <option value="manual">Manual</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Expires In (days)</label>
+                    <input type="number" class="form-input" id="task-expiry-input" placeholder="30" value="30">
+                </div>
+                <button class="btn btn-primary btn-block" id="create-task-submit">Create Task</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
